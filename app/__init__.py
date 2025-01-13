@@ -11,12 +11,13 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    redis_instance = get_redis_instance()
+    get_redis_instance()
 
     global celery
     celery = create_celery_app(app)
 
     from app.routes import task_bp
+
     app.register_blueprint(task_bp)
 
     add_global_filters(app)

@@ -3,6 +3,7 @@ from app.config import Config
 
 _redis_instance = None
 
+
 def get_redis_instance():
     """Get or initialize the Redis instance."""
     global _redis_instance
@@ -11,6 +12,6 @@ def get_redis_instance():
             host=Config.REDIS_HOST,
             port=Config.REDIS_PORT,
             db=Config.REDIS_DB,
-            decode_responses=True
+            decode_responses=True,
         )
     return _redis_instance
