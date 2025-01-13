@@ -39,3 +39,19 @@ def create_task():
     response = TaskResponse(task_id=task_id, status=task_meta_data.get("status"), submitted_at=task_meta_data.get("submitted_at"))
 
     return jsonify(response.model_dump()), 202
+
+@task_bp.route("/tasks/<task_id>", methods=["GET"])
+def get_task_status(task_id):
+    """Get task status."""
+    task_metadata = redis_client.hgetall(f"task:{task_id}")
+    if not task_metadata:
+        return jsonify({"error": "Invalid or expired task ID"}), 404
+
+    response = TaskResponse(
+                task_id=task_id,
+                status=task_metadata.get("status"),
+                submitted_at=task_metadata.get("submitted_at"),
+                result=task_metadata.get("result"),
+            )
+
+    return jsonify(response.model_dump())

@@ -4,13 +4,11 @@ WORKDIR /work
 
 RUN groupadd -r appgroup && useradd -r -g appgroup appuser
 
-COPY requirements.txt .
+COPY . /work
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app app
-
-RUN chown -R appuser:appgroup app
+RUN chown -R appuser:appgroup /work
 
 USER appuser
 
