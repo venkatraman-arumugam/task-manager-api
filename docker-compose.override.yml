@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  flask:
+    volumes:
+      - ./app:/work/app  # Mount the app directory for hot-reloading
+      - ./tests:/work/tests
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+
+  celery:
+    volumes:
+      - ./app:/work/app  # Mount the app directory for hot-reloading
+      - ./tests:/work/tests
