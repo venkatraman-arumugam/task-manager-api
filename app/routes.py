@@ -2,9 +2,11 @@ import time
 import uuid
 
 from flask import Blueprint, request, jsonify
+from pydantic import ValidationError
 
 from app.models import TaskRequest, TaskResponse
 from app import get_redis_instance
+from app.models import TaskPaginationRequest, TaskModel, PaginationMetadata, TaskPaginationResponse
 from app.task import long_running_task
 
 task_bp = Blueprint("tasks", __name__)
@@ -55,3 +57,40 @@ def get_task_status(task_id):
             )
 
     return jsonify(response.model_dump())
+
+
+@task_bp.route("/tasks", methods=["GET"])
+def get_all_tasks():
+    """Get all tasks with their statuses, with pagination."""
+    try:
+        query_params = TaskPaginationRequest(**request.args)
+    except ValidationError as e:
+        return jsonify({"error": e.errors()}), 400
+
+    start = (query_params.page - 1) * query_params.page_size
+    end = start + query_params.page_size - 1
+
+    total_tasks = redis_client.llen("all_tasks")
+    task_ids = redis_client.lrange("all_tasks", start, end)
+
+    tasks = []
+
+    for task_id in task_ids:
+        task_metadata = redis_client.hgetall(f"task:{task_id}")
+        if task_metadata:
+            tasks.append(TaskModel(
+                task_id=task_id,
+                status=task_metadata.get("status"),
+                submitted_at=task_metadata.get("submitted_at"),
+                result=task_metadata.get("result"),
+            ))
+
+    pagination = PaginationMetadata(
+        current_page=query_params.page,
+        page_size=query_params.page_size,
+        total_tasks=total_tasks,
+        total_pages=(total_tasks + query_params.page_size - 1) // query_params.page_size
+    )
+
+    response = TaskPaginationResponse(tasks=tasks, pagination=pagination)
+    return jsonify(response.dict())
