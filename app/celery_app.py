@@ -1,11 +1,14 @@
 from celery import Celery
 
+from app import Config
+
+
 def create_celery_app(app=None):
     """Create a standalone Celery app."""
     celery = Celery(
         "tasks",
-        backend=app.config["CELERY_RESULT_BACKEND"],
-        broker=app.config["CELERY_BROKER_URL"],
+        backend=Config.CELERY_RESULT_BACKEND,
+        broker=Config.CELERY_BROKER_URL,
     )
 
     if app:
