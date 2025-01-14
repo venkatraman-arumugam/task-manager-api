@@ -7,6 +7,8 @@ services:
       - "24224:24224/udp" # Fluentd UDP input
     volumes:
       - ./config/:/fluentd/etc # Custom Fluentd configuration
+    depends_on:
+      - fluentd
 
   redis:
     image: redis:latest
@@ -22,6 +24,9 @@ services:
         fluentd-address: localhost:24224
         tag: redis
     command: ["redis-server", "/usr/local/etc/redis/redis.conf", "--dir", "/data"]
+    depends_on:
+      - redis
+      - fluentd
   flask:
     build:
       context: .
@@ -41,6 +46,7 @@ services:
         tag: flask
     depends_on:
       - redis
+      - fluentd
 
   celery:
     container_name: celery
@@ -65,3 +71,4 @@ services:
         tag: celery
     depends_on:
       - redis
+      - fluentd
