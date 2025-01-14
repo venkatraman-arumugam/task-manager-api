@@ -2,6 +2,9 @@ from celery import Celery
 
 from app import Config
 
+class CeleryConfig:
+    task_acks_late = True
+    task_reject_on_worker_lost = True
 
 def create_celery_app(app=None):
     """Create a standalone Celery app."""
@@ -11,8 +14,8 @@ def create_celery_app(app=None):
         broker=Config.CELERY_BROKER_URL,
     )
 
+    celery.config_from_object(CeleryConfig)
     if app:
-        celery.conf.update(app.config)
 
         TaskBase = celery.Task
 
