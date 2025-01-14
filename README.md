@@ -37,6 +37,19 @@ Copy code
 docker-compose up --build
 ```
 
+## Error
+
+If following error occurred :
+
+
+Error response from daemon: Conflict. The container name "/fluentd" is already in use by container "6bec570a0838409df21f256e318e83d149fa509eaa4d370d4fdb9ea141e1fce3". You have to remove (or rename) that container to be able to reuse that name.
+
+remove the existing container using the following 
+
+```commandline
+docker rm /fluentd <- replace the name with the one appering in the error
+```
+
 ## UI
 
 ```commandline
