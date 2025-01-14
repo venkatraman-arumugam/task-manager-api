@@ -1,7 +1,7 @@
 import time
 import uuid
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, send_from_directory
 from pydantic import ValidationError
 
 from app import get_redis_instance
@@ -19,6 +19,10 @@ tasks = {}
 
 redis_client = get_redis_instance()
 
+@task_bp.route('/')
+def index():
+    """Serve the Vue.js front-end."""
+    return send_from_directory('../static', 'index.html')
 
 @task_bp.route("/tasks", methods=["POST"])
 def create_task():

@@ -8,7 +8,7 @@ celery = None
 
 def create_app():
     """Create and configure the Flask app."""
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder="../static")
     app.config.from_object(Config)
 
     get_redis_instance()

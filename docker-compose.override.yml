@@ -5,6 +5,7 @@ services:
     volumes:
       - ./app:/work/app  # Mount the app directory for hot-reloading
       - ./tests:/work/tests
+      - ./static:/work/static
     environment:
       - FLASK_ENV=development
       - FLASK_DEBUG=1
