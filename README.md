@@ -37,12 +37,6 @@ Copy code
 docker-compose up --build
 ```
 
-Production
-Use the production-specific file explicitly:
-```bash
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build
-```
-
 ## UI
 
 ```commandline

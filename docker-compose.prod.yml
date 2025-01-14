@@ -1,8 +1,0 @@
-services:
-  flask:
-    environment:
-      - FLASK_ENV=production
-    volumes: []
-
-  celery:
-    volumes: []
