@@ -117,6 +117,16 @@ Response (Sample)
 }
 ```
 
+### Tests
+
+For running the tests
+
+```
+docker-compose up --build #ignore it if app is already running
+
+docker-compuse exec flask pytest
+```
+
 ### Failure Scenarios 
 
 To stimulate and play with failure scenarios following commands can be used
