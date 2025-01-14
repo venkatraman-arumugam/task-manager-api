@@ -37,12 +37,6 @@ Copy code
 docker-compose up --build
 ```
 
-Production
-Use the production-specific file explicitly:
-```bash
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build
-```
-
 ## UI
 
 ```commandline
@@ -144,4 +138,10 @@ To simulate Redis unavailability:
 To simulate API server downtime:
 ```
  docker-compose stop flask
+```
+
+#### Flush Redis DB
+
+```commandline
+docker-compose exec redis redis-cli FLUSHALL
 ```
