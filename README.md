@@ -43,6 +43,11 @@ Use the production-specific file explicitly:
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build
 ```
 
+## UI
+
+```commandline
+http://localhost:5000/
+```
 
 ## API Endpoints
 
@@ -116,4 +121,27 @@ Response (Sample)
     "submitted_at": "2025-01-13 06:53:09",
     "task_id": "a491f24b-5966-4fc1-a81f-6aa78f6ce6b7"
 }
+```
+
+### Failure Scenarios 
+
+To stimulate and play with failure scenarios following commands can be used
+
+#### Stop Celery
+To simulate Celery unavailability:
+
+```
+ docker-compose stop celery
+```
+
+#### Stop Redis
+To simulate Redis unavailability:
+```
+ docker-compose stop redis
+```
+
+#### Stop Flask
+To simulate API server downtime:
+```
+ docker-compose stop flask
 ```
