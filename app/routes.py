@@ -4,14 +4,13 @@ import uuid
 from flask import Blueprint, request, jsonify
 from pydantic import ValidationError
 
-from app.models import TaskRequest, TaskResponse
 from app import get_redis_instance
 from app.models import (
     TaskPaginationRequest,
-    TaskModel,
     PaginationMetadata,
     TaskPaginationResponse,
 )
+from app.models import TaskRequest, TaskResponse
 from app.task import long_running_task
 
 task_bp = Blueprint("tasks", __name__)
@@ -46,6 +45,7 @@ def create_task():
 
     response = TaskResponse(
         task_id=task_id,
+        task_name=task_data.task_name,
         status=task_meta_data.get("status"),
         submitted_at=task_meta_data.get("submitted_at"),
     )
@@ -62,6 +62,7 @@ def get_task_status(task_id):
 
     response = TaskResponse(
         task_id=task_id,
+        task_name=task_metadata.get("task_name"),
         status=task_metadata.get("status"),
         submitted_at=task_metadata.get("submitted_at"),
         result=task_metadata.get("result"),
@@ -90,8 +91,9 @@ def get_all_tasks():
         task_metadata = redis_client.hgetall(f"task:{task_id}")
         if task_metadata:
             tasks.append(
-                TaskModel(
+                TaskResponse(
                     task_id=task_id,
+                    task_name=task_metadata.get("task_name"),
                     status=task_metadata.get("status"),
                     submitted_at=task_metadata.get("submitted_at"),
                     result=task_metadata.get("result"),
@@ -107,4 +109,4 @@ def get_all_tasks():
     )
 
     response = TaskPaginationResponse(tasks=tasks, pagination=pagination)
-    return jsonify(response.dict())
+    return jsonify(response.model_dump())

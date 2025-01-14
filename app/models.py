@@ -9,6 +9,7 @@ class TaskRequest(BaseModel):
 
 class TaskResponse(BaseModel):
     task_id: str
+    task_name: str
     status: str
     submitted_at: str
     duration: Optional[int] = None
@@ -21,14 +22,6 @@ class TaskPaginationRequest(BaseModel):
         10, gt=0, description="Number of tasks per page (must be greater than 0)"
     )
 
-
-class TaskModel(BaseModel):
-    task_id: str
-    status: str
-    submitted_at: Optional[str] = None
-    result: Optional[str] = None
-
-
 class PaginationMetadata(BaseModel):
     current_page: int
     page_size: int
@@ -37,5 +30,5 @@ class PaginationMetadata(BaseModel):
 
 
 class TaskPaginationResponse(BaseModel):
-    tasks: List[TaskModel]
+    tasks: List[TaskResponse]
     pagination: PaginationMetadata
