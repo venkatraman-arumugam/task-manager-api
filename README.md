@@ -11,7 +11,7 @@ A Flask-based Task Manager API that utilizes Redis as both the Celery broker and
 - **Asynchronous Processing**: Tasks are processed asynchronously using Celery.
 - **Redis Integration**: Redis serves as both the message broker and result backend for Celery.
 - **Dockerized Services**: The application, along with Redis and Celery, can be run using Docker Compose for easy setup.
-
+- **Centralized Logging**: Fluentd integration for centralized logging. 
 ## Prerequisites
 
 - [Docker](https://www.docker.com/get-started) installed on your machine.
@@ -138,10 +138,4 @@ To simulate Redis unavailability:
 To simulate API server downtime:
 ```
  docker-compose stop flask
-```
-
-#### Flush Redis DB
-
-```commandline
-docker-compose exec redis redis-cli FLUSHALL
 ```
