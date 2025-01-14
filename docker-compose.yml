@@ -7,7 +7,7 @@ services:
       - "24224:24224/udp" # Fluentd UDP input
     volumes:
       - ./config/:/fluentd/etc # Custom Fluentd configuration
-      - ./data/log:/fluentd/log # Logs written by Fluentd
+
   redis:
     image: redis:latest
     container_name: redis
