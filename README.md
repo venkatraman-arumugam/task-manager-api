@@ -125,17 +125,17 @@ To stimulate and play with failure scenarios following commands can be used
 To simulate Celery unavailability:
 
 ```
- docker-compose stop $celery
+ docker-compose stop celery$
 ```
 
 #### Stop Redis
 To simulate Redis unavailability:
 ```
- docker-compose stop $redis
+ docker-compose stop redis$
 ```
 
 #### Stop Flask
 To simulate API server downtime:
 ```
- docker-compose stop $flask
+ docker-compose stop flask$
 ```
